@@ -11,9 +11,11 @@ import Textfield from "../../Common/Textfield";
 import Passwordfield from "../../Common/Passwordfield";
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
+import Button1 from "../../Common/Button1/Button1";
+import { useNavigate } from "react-router-dom";
 
 
-export default function Login() {
+export default function welcomePage() {
     const [emailT, setEmail] = useState('');
     const [passwordT, setPassword] = useState('');
     const [nameT, setNameT] = useState('')
@@ -24,6 +26,7 @@ export default function Login() {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up('lg'));
     const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
     const handleClose = () => {
         setOpen(false);
     };
@@ -49,7 +52,10 @@ export default function Login() {
         })
             .then(function (response) {
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('user',response.data.userID)
+                console.log(response.data.userID)
                 console.log(response.data.token);
+                window.location.reload();
             })
             .catch(function (error) {
                 console.log(error);
@@ -129,7 +135,7 @@ export default function Login() {
                             </>
                         )}
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: register ? '10px' : '50px' }}>
-
+                    
                         <Button
                             sx={{
                                 backgroundColor: '#95a6fe',
