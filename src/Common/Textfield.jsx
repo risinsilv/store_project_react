@@ -7,21 +7,21 @@ export default function Textfield(props){
             width: `${props.width}`,
             '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: 'black',
                     borderRadius: '10px',
                 },
                 '&:hover fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: '#acd4f7',
                 },
                 '&.Mui-focused fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: '#acd4f7',
                 },
             },
             '& .MuiInputLabel-root': {
-                color: '#95a6fe',
+                color: 'black',
             },
             '& .MuiInputBase-input': {
-                color: '#95a6fe',
+                color: 'black',
             },
         }}
             onChange={(e) => {props.function(e.target.value)}}

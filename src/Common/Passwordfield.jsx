@@ -18,28 +18,28 @@ export default function Passwordfield(props){
             m: 1, width: '80%',
             '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: 'black',
                     borderRadius: '10px',
                     backgroundColor: 'transparent',
                 },
                 '&:hover fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: 'black',
                 },
                 '&.Mui-focused fieldset': {
-                    borderColor: '#95a6fe',
+                    borderColor: '#acd4f7',
                 },
                 '& .MuiInputLabel-root': {
-                    color: '#95a6fe',
+                    color: 'black',
                     
                 },
                 '& .MuiInputBase-input': {
-                    color: '#95a6fe',
+                    color: 'black',
                     
                 },
             },
          
         }} variant="outlined" >
-            <InputLabel htmlFor="outlined-adornment-password" sx={{ color: '#95a6fe' }}>{props.label}</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password" sx={{ color: 'black' }}>{props.label}</InputLabel>
             <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}

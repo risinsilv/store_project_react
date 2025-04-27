@@ -4,8 +4,9 @@ import TextField from '@mui/material/TextField';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useState, useRef } from "react";
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { Add } from "@mui/icons-material";
 import instance from '../../Service/AxiosOrder';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Product() {
     const [name, setName] = useState('');
@@ -35,11 +36,29 @@ export default function Product() {
         })
             .then((response) => {
                 console.log(response.data.message);
-                alert('Product added successfully!');
+                toast.success('Product added successfully!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             })
             .catch((error) => {
                 console.error('Error adding product:', error);
-                alert('Failed to add product.');
+                toast.error('Failed to add product.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             });
     };
     const handleImageChange = (e) => {
@@ -51,10 +70,11 @@ export default function Product() {
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
-            <Box sx={{ width: '40%', height: '800px', border: '5px solid #95a6fe', borderRadius: "30px" }}>
+            <Box sx={{ width: '40%', height: '800px', borderRadius: "30px",boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px', }}>
+
             <AddBoxIcon
                     sx={{
-                        color: '#95a6fe',
+                        color: '#acd4f7',
                         fontSize: '50px',
                         marginTop: '20px',
                         marginLeft: '20px',
@@ -69,7 +89,7 @@ export default function Product() {
                     <Box
                         sx={{
                             width: '200px',
-                            border: '5px solid #95a6fe',
+                            border: '5px solid #acd4f7',
                             borderRadius: "30px",
                             marginTop: '20px',
                             height: '200px',
@@ -82,7 +102,7 @@ export default function Product() {
                         }}
                         onClick={() => inputRef.current.click()}
                     >
-                        {!image && <AddPhotoAlternateIcon sx={{ color: '#95a6fe', fontSize: '100px' }} />}
+                        {!image && <AddPhotoAlternateIcon sx={{ color: '#acd4f7', fontSize: '100px' }} />}
                         <input
                             type="file"
                             accept="image/*"
@@ -115,6 +135,7 @@ export default function Product() {
                     <Textfield label='Category' width='80%' function={setCategory} />
                 </Box>
             </Box>
+            <ToastContainer />
         </Box>
     );
 }

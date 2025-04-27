@@ -15,17 +15,21 @@ import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 
 export default function dashBoard() {
     const navigate = useNavigate();
+    const role = localStorage.getItem('role');
+    console.log(role)
 
     return (
         <>
-            <Box sx={{ width: '100vw' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', height: '80px', width: '100vw', backgroundColor: 'transparent', position: 'sticky', top: 0, zIndex: 1 }}>
+            <Box sx={{ width: '100vw', }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', height: '80px', width: '100%', backgroundColor: 'transparent', position: 'sticky', top: 0, zIndex: 1 }}>
                     <Box sx={{ display: 'flex', height: '100%', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', height: '30px', width: '30vw' }}>
                             <Button1 text='Home' function={() => navigate("/Home")}/>
                             <Button1 text='My orders' function={() => navigate("/GetOrders")}/>
                             <Button1 text={<ShoppingCartIcon />} function={() => navigate('/Cart')}/>
-                            <Button1 text='Add Products' function={() => navigate('/Product')}/>
+                            {role === 'admin' && (
+                                <Button1 text='Add Products' function={() => navigate('/Product')} />
+                            )}
                             <Button1 text={<ExitToAppRoundedIcon />} function={()=> {localStorage.clear('token'),window.location.reload()}}/>
                         </Box>
                     </Box>

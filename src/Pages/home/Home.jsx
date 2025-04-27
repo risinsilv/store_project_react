@@ -1,16 +1,18 @@
-import { Box } from '@mui/material';
-import loginback from '../../assets/loginback1.jpg';
+import { Box, Button } from '@mui/material';
+import loginback from '../../assets/loginback4.jpg';
 import Search from '../../Common/Search/Search';
 import DropDown from '../../Common/DropDown/DropDown';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useEffect, useState } from 'react';
 import instance from '../../Service/AxiosOrder';
 import Addtocartpopup from '../../Common/AddToCartPopUp/AddToCartPopUp';
+import UpdateProduct from '../../Common/UpdateProductPopup/UpdateProduct';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Home() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]); // State for filtered products
-    const [selectedCategory, setSelectedCategory] = useState(''); // State for selected category
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const [pname, setPname] = useState('');
     const [pstock, setStock] = useState(0);
@@ -18,20 +20,40 @@ export default function Home() {
     const [pcategory, setCategory] = useState('');
     const [pimage, setImage] = useState('');
     const [pid, setPid] = useState('');
+    const [pdescription, setDescription] = useState('');
 
-    const [open, setOpen] = useState(false);
+    const [openAddToCart, setOpenAddToCart] = useState(false);
+    const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
 
-    const handleClickOpen = (name, stock, image, category, price, id) => {
-        setOpen(true);
+    const role = localStorage.getItem('role'); // Get the role from local storage
+    const handleClickOpenAddToCart = (name, stock, image, category, price, id, description) => {
+        setOpenAddToCart(true);
         setPname(name);
         setStock(stock);
         setPrice(price);
         setCategory(category);
         setImage(image);
         setPid(id);
+        setDescription(description);
     };
-    const handleClose = () => {
-        setOpen(false);
+
+    const handleCloseAddToCart = () => {
+        setOpenAddToCart(false);
+    };
+
+    const handleClickOpenUpdateProduct = (name, stock, image, category, price, id, description) => {
+        setOpenUpdateProduct(true);
+        setPname(name);
+        setStock(stock);
+        setPrice(price);
+        setCategory(category);
+        setImage(image);
+        setPid(id);
+        setDescription(description);
+    };
+
+    const handleCloseUpdateProduct = () => {
+        setOpenUpdateProduct(false);
     };
 
     const getProducts = () => {
@@ -55,22 +77,20 @@ export default function Home() {
         }
     };
 
-    const handleSearch = (name)=>{
-        if(name === "")
-        {
+    const handleSearch = (name) => {
+        if (name === "") {
             setFilteredProducts(products);
-        }else{
-                 setFilteredProducts(products.filter((product) => product.name === name));
+        } else {
+            setFilteredProducts(products.filter((product) => product.name === name));
         }
-       
-    }
+    };
 
     useEffect(() => {
         getProducts(); // Fetch products when the component mounts
     }, []);
 
     return (
-        <>
+        <Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100vw', marginTop: '50px' }}>
                 <Box
                     sx={{
@@ -86,7 +106,7 @@ export default function Home() {
                 >
                     <Box
                         sx={{
-                            color: 'white',
+                            color: 'black',
                             fontFamily: 'bebas neue',
                             fontSize: '160px',
                             fontWeight: '400',
@@ -104,24 +124,37 @@ export default function Home() {
                 <Box sx={{ width: '95%' }}>
                     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                         <Box sx={{ margin: '20px' }}>
-                            <DropDown onCategoryChange={handleCategoryChange} /> {/* Pass callback to DropDown */}
+                            <DropDown onCategoryChange={handleCategoryChange} />
                         </Box>
                         <Box sx={{ margin: '20px' }}>
-                            <Search onSearch={handleSearch}/>
+                            <Search onSearch={handleSearch} />
                         </Box>
                     </Box>
+                    <Addtocartpopup
+                        open={openAddToCart}
+                        handleClose={handleCloseAddToCart}
+                        name={pname}
+                        stock={pstock}
+                        category={pcategory}
+                        image={pimage}
+                        price={pprice}
+                        id={pid}
+                    />
+                    <UpdateProduct
+                        open={openUpdateProduct}
+                        handleClose={handleCloseUpdateProduct}
+                        name={pname}
+                        stock={pstock}
+                        category={pcategory}
+                        image={pimage}
+                        price={pprice}
+                        id={pid}
+                        description={pdescription}
+                        
+                    
+                    />
                     <Box sx={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '50px', flexWrap: 'wrap' }}>
-                        <Addtocartpopup
-                            open={open}
-                            handleClose={handleClose}
-                            name={pname}
-                            stock={pstock}
-                            category={pcategory}
-                            image={pimage}
-                            price={pprice}
-                            id={pid}
-                        />
-                        {Array.isArray(filteredProducts) && filteredProducts.length === 0 ? ( // Check if filteredProducts is an array and empty
+                        {Array.isArray(filteredProducts) && filteredProducts.length === 0 ? (
                             <Box sx={{ fontFamily: 'inter', fontSize: '20px', fontWeight: '700', color: '#95a6fe' }}>
                                 No products available.
                             </Box>
@@ -139,7 +172,7 @@ export default function Home() {
                                         position: 'relative',
                                         '&:hover': {
                                             transform: 'scale(0.95)', // Enlarge the icon on hover
-                                            backgroundColor: '#95a6fe', // Change color on hover
+                                            backgroundColor: '#acd4f7', // Change color on hover
                                         },
                                         transition: '0.5s',
                                     }}
@@ -160,18 +193,50 @@ export default function Home() {
                                             },
                                         }}
                                         onClick={() =>
-                                            handleClickOpen(
+                                            handleClickOpenAddToCart(
                                                 product.name,
                                                 product.stock,
                                                 product.image,
                                                 product.category,
                                                 product.price,
-                                                product.ID
+                                                product.ID,
+                                                product.description
                                             )
-                                        } // Call handleClickOpen when the icon is clicked
+                                        }
                                     >
                                         <ShoppingCartIcon sx={{ fontSize: '50px' }} />
                                     </Box>
+                                    {role === 'admin' && (
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                left: '10px',
+                                                top: '10px',
+                                                transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
+                                                '&:hover': {
+                                                    transform: 'scale(1.2)', // Enlarge the icon on hover
+                                                    color: 'white', // Change color on hover
+                                                },
+                                                '&:active': {
+                                                    transform: 'scale(1)', // Reset size on click
+                                                    color: 'black', // Change color on click
+                                                },
+                                            }}
+                                            onClick={() =>
+                                                handleClickOpenUpdateProduct(
+                                                    product.name,
+                                                    product.stock,
+                                                    product.image,
+                                                    product.category,
+                                                    product.price,
+                                                    product.ID,
+                                                    product.description
+                                                )
+                                            }
+                                        >
+                                            <AddIcon sx={{ fontSize: '50px', color:'red' }} />
+                                        </Box>
+                                    )}
                                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                         <Box
                                             sx={{
@@ -252,6 +317,6 @@ export default function Home() {
                     </Box>
                 </Box>
             </Box>
-        </>
+        </Box>
     );
 }

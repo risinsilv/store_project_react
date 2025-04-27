@@ -12,7 +12,8 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
-
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -22,9 +23,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
+
 // adjust path if needed
 
 export default function CustomizedDialogs(props) {
+    const notify = () => toast.success("Item added to cart!");
     const [quantity, setQuantity] = React.useState(1);
     const dispatch = useDispatch();
 
@@ -43,13 +46,21 @@ export default function CustomizedDialogs(props) {
             image: props.image,
             quantity: quantity,  // Item quantity
         };
-        props.handleClose();
-        dispatch(addToCart(item));  // Dispatch the addToCart action
+        
+        close();
+        dispatch(addToCart(item)); 
+        notify();
     };
+
+    const close = () => {
+        props.handleClose();
+        setQuantity(1)
+    }
 
     return (
         <React.Fragment>
-            <BootstrapDialog onClose={props.handleClose} open={props.open}>
+             <ToastContainer theme='dark'/>
+            <BootstrapDialog onClose={close} open={props.open}>
                 <Box sx={{ width: '400px', height: '590px', margin: '30px', borderRadius: '20px' }}>
                     {/* image, category, name */}
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -89,6 +100,7 @@ export default function CustomizedDialogs(props) {
                         <Button onClick={handleAddToCart} sx={{ fontSize: '25px', color: 'black' }}>
                             Add to cart
                         </Button>
+                       
                     </Box>
                 </Box>
             </BootstrapDialog>
